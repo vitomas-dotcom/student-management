@@ -89,7 +89,6 @@ app.post('/students/add', (req, res) => {
 
 
 app.get('/students/search', (req, res) => {
-
     const keyword = req.query.keyword || '';
 
     const sql = `
@@ -98,23 +97,18 @@ app.get('/students/search', (req, res) => {
         OR first_name LIKE ?
         OR last_name LIKE ?
         OR course LIKE ?
+        ORDER BY id DESC
     `;
 
-    const searchValue = `%${keyword}%`;
+    const search = `%${keyword}%`;
 
     db.query(
         sql,
-        [
-            searchValue,
-            searchValue,
-            searchValue,
-            searchValue
-        ],
+        [search, search, search, search],
         (err, results) => {
-
             if (err) {
                 console.error(err);
-                return res.status(500).send('Search error');
+                return res.status(500).send('Database error');
             }
 
             res.render('index', {
